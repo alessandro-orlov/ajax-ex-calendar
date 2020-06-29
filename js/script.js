@@ -1,74 +1,76 @@
 $(document).ready(function(){
 
+$.ajax(
+  {
+    url:"https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
+    method: "GET",
+    success: function(info) {
+      var festivita = info['response']
+      console.log(festivita)
 
-  // MOMENT
-  var gennaio = moment('2018-01').format('MMMM YYYY')
-  $('.wrapper h1').text(gennaio)
+      // Mese iniziale Gennaio
+      var gennaio = moment('2018-01').format('MMMM YYYY');
+      $('.wrapper h1').text(gennaio)
 
-  var giorniNelMese = moment("2018-01", "YYYY-MM").daysInMonth();
+      // Prendo il numero dei giorni nel mese
+      var giorniNelMese = moment("2018-01", "YYYY-MM").daysInMonth();
+      // handlebars
+      var source = $('#calendar-template').html();
+      var template = Handlebars.compile(source);
+      // Oggetto data iniziale
+      var date = moment('2018-01-01');
+
+      // Stampo tutti i giorni del mese
+      for (var i = 0; i < giorniNelMese; i++) {
+        // Giorno successivo
+        var nextDay = moment(date).add(i, 'd');
+
+        // Converto il giorno succesiovo nel formato desiderato
+        var dayMonth = nextDay.format('D MMMM');
+        console.log('giorno del mese ' + dayMonth);
 
 
-  dayTamplate(giorniNelMese)
+        $.each(festivita, function(key, value ) {
 
+          var dataFestivo = value['date'];
+          var nomeFestivo = value['name'];
+          var dataConfronto = moment(dataFestivo).format('D MMMM');
 
-  // =====================================================
-  // =============== FUNCTIONS ===========================
+          var singolaFestivita = nomeFestivo + ' ' + dataConfronto;
+          console.log('Each singola festivita ' + singolaFestivita);
 
-  // Handlebars tamplate function
-  function dayTamplate(daysInMonth) {
-
-      // Ajax call
-      $.ajax(
-        {
-          url:"https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
-          method: "GET",
-          success: function(info) {
-
-            var giornoFestivo = info['response']
-
-            for(key in giornoFestivo) {
-
-              var holydays = giornoFestivo[key]
-              console.log(holydays['date'])
-
-            }
-
-            // Oggetto della data
-            var data = moment('2018-01-01')
-            var corispondenza = data['_i']
-            console.log(corispondenza)
-
-            // Converto la data(perche oggetto) in stringa
-            var dataConvertita = data.format('D MMMM')
-
-            // CICLO per stampare tutti i giorni del mese
-            for (var i = 0; i < daysInMonth; i++) {
-              // hendlebars template
-              var source = $('#calendar-template').html();
-              var template = Handlebars.compile(source);
-
-              var context = {dataConvertita}
-              var html = template(context);
-
-              // Inserisco elemento del template nel html
-              $('.calendar').append(html);
-
-              data.add(1, 'd');
-              dataConvertita = data.format('D MMMM');
-
-            } // End ciclo for
-
-          },
-          error: function(request, state, error) {
-
+          if(singolaFestivita.includes(dayMonth) ) {
+            var giornoDelMese = dataConfronto + ' ' + nomeFestivo;
+            var context = {giornoDelMese};
+            var html = template(context);
+            $('.calendar').append(html);
+          } else {
+            giornoDelMese = dayMonth;
+            context = {giornoDelMese};
+            html = template(context);
+            $('.calendar').append(html);
           }
-        }
-      ); // END Ajax call
 
+        }); // End each
 
+      } // End ciclo for
+    },
+    error: function(request, state, error) {
+      alert('errore ' + error)
+    }
+  }
+);
+// FUNZIONI
+function ajaxResponseTamplate(response) {
+  var source = $('#calendar-template').html();
+  var template = Handlebars.compile(source);
 
-  } // End Function
+  for (var i = 0; i < response.length; i++) {
+    var giornoDiFesta = response[i];
+    var html = template(giornoDiFesta);
 
+    $('.calendar').append(html)
+  }
+}
 
-
-}); // End document ready
+}) // end document ready
