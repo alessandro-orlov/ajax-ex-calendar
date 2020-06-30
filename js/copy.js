@@ -73,4 +73,6 @@ function ajaxResponseTamplate(response) {
   }
 }
 
+
+
 }) // end document ready
