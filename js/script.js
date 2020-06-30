@@ -1,9 +1,11 @@
 $(document).ready(function() {
 
+  moment().locale('it');
 
-  var meseBase = moment('2018-01-01');
+  var meseBase = moment('2018-01-01').locale('de');
+  console.log(meseBase.format('dddd D MMMM YYYY'))
 
-  $('.wrapper h1').text(meseBase.format('MMMM YYYY')); //ok
+  $('.wrapper h1').text(meseBase.format('MMMM YYYY', 'LLLL')); //ok
 
   currentMonth(meseBase);
   holidaysInMonth(meseBase);
@@ -45,13 +47,12 @@ $(document).ready(function() {
   // Funzuine stampa giorni del mese corrente
   // ---> month è il mese da stampare
   function currentMonth(month) {
-    $('.calendar').html('')
+    $('.calendar').html('');
     var giorniNelMese = month.daysInMonth(); // ok
 
     // handlebars
     var source = $('#calendar-template').html();
     var template = Handlebars.compile(source);
-
     for (var i = 1; i <= giorniNelMese; i++) {
       var singoloGiorno = moment({
         year: month.year(),
@@ -59,11 +60,15 @@ $(document).ready(function() {
         day: i,
       });
 
+
       var giornoCorrenteAttr = singoloGiorno.format('YYYY-MM-DD')
 
       var context = {
         data: singoloGiorno.format('D MMMM'),
-        currentDay: giornoCorrenteAttr
+        currentDay: giornoCorrenteAttr,
+        day: singoloGiorno.format('dddd'),
+        date: singoloGiorno.format('D'),
+        month: singoloGiorno.format('MMMM')
       }
 
       var html = template(context);
@@ -109,11 +114,22 @@ $(document).ready(function() {
             //   }
             //
             // }); // End each()
+            // handlebars
+            var source = $('#holiday-template').html();
+            var template = Handlebars.compile(source);
+
+            var context = {
+              holiday:nomeFestivo
+            }
+
+            var html = template(context);
+
 
             // CONFRONTO CON L'ATTRIBUTO
             var holiday = $('.calendar li[data-giorno-corrente="'+ dataFestivo +'"]');
             holiday.addClass('festivo')
-            holiday.append(' - ' + nomeFestivo)
+            holiday.find('.calendar-holiday').append(html);
+            // holiday.append(' - ' + nomeFestivo)
           } // end for()
 
         },

@@ -7,6 +7,9 @@
 }
 
 /* GENERAL */
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
 .wrapper {
   width: 100%;
   max-width: 1170px;
@@ -15,20 +18,66 @@
   box-shadow: 0px 0px 8px 4px #ccc;
   padding: 15px 30px;
 }
+.month-change {
+  text-align: center;
+  line-height: 60px;
+}
+.month-change h1 {
+  display: inline-block;
+  width: 280px;
+  vertical-align: middle;
+  color: darkcyan;
+}
+.prev-container,
+.next-container {
+  display: inline-block;
+  width: 100px;
+}
 .wrapper ul {
   margin: 10px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 1070px;
+  list-style: none;
 }
 .wrapper ul li {
-  margin: 5px 0;
+  padding: 5px;
+  flex-basis: calc(100% / 7);
+  height: 120px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
 }
-.festivo {
+li span.calendar-day {
+  color: #ccc;
+  line-height: 50px;
+  flex-basis: 50%;
+}
+li span.calendar-date {
+  font-size: 2.2em;
+  align-items: center;
+  font-weight: bold;
+}
+li span.calendar-holiday {
+  font-weight: bold;
+}
+li span.calendar-month {
+  color: #ccc;
+  flex-basis: 100%;
+}
+.wrapper ul li.festivo {
   color: red;
+  border: 1px solid red;
 }
 .next,
-.prev,
-h1 {
+.prev {
   display: inline-block;
   margin: 5px 10px;
+  padding: 10px;
+  cursor: pointer;
 }
 .next
  {

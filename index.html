@@ -9,25 +9,52 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js"></script>
     <!-- Moment.js -->
     <script src="https://momentjs.com/downloads/moment.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
     <!-- My CSS -->
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
     <div class="wrapper">
-      <div class="prev hidden">
-        << Prev
+      <!-- Begin month change -->
+      <div class="month-change">
+
+        <div class="prev-container">
+          <span class="prev hidden">
+            << Prev
+          </span>
+        </div>
+
+        <h1></h1>
+
+        <div class="next-container">
+          <span class="next visible">
+            Next >>
+          </span>
+        </div>
+
       </div>
-      <h1></h1>
-      <div class="next visible">
-        Next >>
-      </div>
+      <!-- End month change -->
+
+      <!-- Tamplate placeholder -->
       <ul class="calendar">
       </ul>
+      
     </div>
+    <!-- End wrapper -->
 
     <!-- Handlebars tamplate -->
     <script id="calendar-template" type="text/x-handlebars-template">
-      <li data-giorno-corrente="{{ currentDay }}">{{data}}</li>
+      <li data-giorno-corrente="{{ currentDay }}">
+        <span class="calendar-day">{{day}}</span>
+        <span class="calendar-date">{{date}}</span>
+        <span class="calendar-holiday"></span>
+        <span class="calendar-month">{{month}}</span>
+      </li>
+    </script>
+
+    <script id="holiday-template" type="text/x-handlebars-template">
+        {{holiday}}
     </script>
     <!-- End Handlebars tamplate -->
 
