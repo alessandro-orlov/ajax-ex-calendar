@@ -24,3 +24,9 @@
 .festivo {
   color: red;
 }
+.next,
+.prev,
+h1 {
+  display: inline-block;
+  margin: 5px 10px;
+}

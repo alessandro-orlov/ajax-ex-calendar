@@ -6,9 +6,24 @@ $(document).ready(function() {
   $('.wrapper h1').text(meseBase.format('MMMM YYYY')); //ok
 
   currentMonth(meseBase);
-  holidaysInMonth();
+  holidaysInMonth(meseBase);
 
+  $('.next').click(function() {
+    meseBase.add(1, 'month');
+    console.log(meseBase)
 
+    $('.wrapper h1').text(meseBase.format('MMMM YYYY'));
+    currentMonth(meseBase);
+    holidaysInMonth(meseBase);
+  });
+
+  $('.prev').click(function() {
+    meseBase.subtract(1, 'month');
+
+    $('.wrapper h1').text(meseBase.format('MMMM YYYY'));
+    currentMonth(meseBase);
+    holidaysInMonth(meseBase);
+  });
 
 
   // ====================================================
@@ -49,11 +64,15 @@ $(document).ready(function() {
 
 
   // Funzione holidaysInMonth()
-  function holidaysInMonth() {
+  function holidaysInMonth(meseBase) {
     $.ajax(
       {
-        url:"https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
+        url:"https://flynn.boolean.careers/exercises/api/holidays",
         method: "GET",
+        data: {
+          year: meseBase.year(),
+          month: meseBase.month()
+        },
         success: function(info) {
 
           var festivi = info.response
