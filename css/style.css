@@ -30,3 +30,12 @@ h1 {
   display: inline-block;
   margin: 5px 10px;
 }
+.next
+ {
+  display: none;
+}
+.visible {
+  display: inline-block;
+}
+.hidden {
+  display: none

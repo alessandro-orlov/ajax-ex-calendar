@@ -10,11 +10,18 @@ $(document).ready(function() {
 
   $('.next').click(function() {
     meseBase.add(1, 'month');
-    console.log(meseBase)
 
     $('.wrapper h1').text(meseBase.format('MMMM YYYY'));
+
     currentMonth(meseBase);
     holidaysInMonth(meseBase);
+
+    if(meseBase.format('MMMM YYYY') === 'December 2018') {
+      $('.next').removeClass('visible');
+    } else {
+      $('.prev').removeClass('hidden');
+    }
+
   });
 
   $('.prev').click(function() {
@@ -23,6 +30,12 @@ $(document).ready(function() {
     $('.wrapper h1').text(meseBase.format('MMMM YYYY'));
     currentMonth(meseBase);
     holidaysInMonth(meseBase);
+
+    if (meseBase.format('MMMM YYYY') === 'January 2018') {
+      $('.prev').addClass('hidden');
+    } else {
+      $('.next').addClass('visible');
+    }
   });
 
 
