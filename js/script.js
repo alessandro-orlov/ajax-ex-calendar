@@ -6,13 +6,18 @@ $(document).ready(function() {
   $('.wrapper h1').text(meseBase.format('MMMM YYYY')); //ok
 
   currentMonth(meseBase);
+  holidaysInMonth();
+
+
+
 
   // ====================================================
   // ================ FUNCTIONS =========================
 
-  // Funzuine stampa mese corrente
+  // Funzuine stampa giorni del mese corrente
   // ---> month è il mese da stampare
   function currentMonth(month) {
+    $('.calendar').html('')
     var giorniNelMese = month.daysInMonth(); // ok
 
     // handlebars
@@ -25,26 +30,65 @@ $(document).ready(function() {
         month: month.month(),
         day: i,
       });
-      console.log(singoloGiorno);
+
+      var giornoCorrenteAttr = singoloGiorno.format('YYYY-MM-DD')
 
       var context = {
-        data: singoloGiorno.format('D MMMM')
+        data: singoloGiorno.format('D MMMM'),
+        currentDay: giornoCorrenteAttr
       }
 
       var html = template(context);
 
-      // Stamp a scermo il singolo giorno
+      // Stampo a scermo il singolo giorno
       $('.calendar').append(html);
+
     } // fine ciclo for
 
   } // End function currentMonth()
 
 
-  // // Funzione holidaysInMonth()
-  //  function holidaysInMonth() {
-  //
-  //  }
+  // Funzione holidaysInMonth()
+  function holidaysInMonth() {
+    $.ajax(
+      {
+        url:"https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0",
+        method: "GET",
+        success: function(info) {
 
+          var festivi = info.response
 
+          for (var i = 0; i < festivi.length; i++) {
+            var giornoFestivo = festivi[i];
+            var dataFestivo = giornoFestivo['date'];
+            var nomeFestivo = giornoFestivo['name'];
+
+            // ======================================================
+            // ======== Ciclo each() - richiede piu risorse =========
+            // Ciclo su tutti gli elementi <li>
+            // $('.calendar li').each( function() {
+            //   // Seleziono/Leggo attributo del <li> corrente
+            //   var elementoCorrente = $(this).attr('data-giorno-corrente');
+            //
+            //   if (dataFestivo === elementoCorrente) {
+            //     // Aggiungo la classe e il nomeFestivo all'elemento <li>
+            //     $(this).addClass('festivo');
+            //     $(this).append(' - ' + nomeFestivo)
+            //   }
+            //
+            // }); // End each()
+
+            // CONFRONTO CON L'ATTRIBUTO
+            var holiday = $('.calendar li[data-giorno-corrente="'+ dataFestivo +'"]');
+            holiday.addClass('festivo')
+            holiday.append(' - ' + nomeFestivo)
+          } // end for()
+
+        },
+        error: function() {
+          alert('Errore')
+        }
+      });
+  }
 
 }) // end document ready
