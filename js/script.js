@@ -1,16 +1,18 @@
 $(document).ready(function() {
 
-  moment().locale('it');
+  moment.locale('it');
 
-  var meseBase = moment('2018-01-01').locale('de');
+  var meseBase = moment('2018-01-01')
+
   console.log(meseBase.format('dddd D MMMM YYYY'))
 
-  $('.wrapper h1').text(meseBase.format('MMMM YYYY', 'LLLL')); //ok
+  $('.wrapper h1').text(meseBase.format('MMMM YYYY')); //ok
 
   currentMonth(meseBase);
   holidaysInMonth(meseBase);
 
   $('.next').click(function() {
+    moment.locale('it');
     meseBase.add(1, 'month');
 
     $('.wrapper h1').text(meseBase.format('MMMM YYYY'));
@@ -27,6 +29,7 @@ $(document).ready(function() {
   });
 
   $('.prev').click(function() {
+    moment.locale('it');
     meseBase.subtract(1, 'month');
 
     $('.wrapper h1').text(meseBase.format('MMMM YYYY'));
